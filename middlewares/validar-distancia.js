@@ -14,7 +14,7 @@ const validarDistanciaEntreCoordendas = (req, res = response, next) => {
     lon2 = gradosARadianes(userLocation.longitude);
    
 
-    // Aplicar fórmula
+    // Aplicar fórmula para pasar de metros a kilometros
     const RADIO_TIERRA_EN_KILOMETROS = 6371;
     let diferenciaEntreLongitudes = (lon2 - lon1);
     let diferenciaEntreLatitudes = (lat2 - lat1);
