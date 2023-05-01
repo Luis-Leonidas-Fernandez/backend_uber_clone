@@ -55,6 +55,6 @@ server.listen(process.env.PORT || 5000, (err) => {
 
     if (err) throw new Error(err);
 
-    console.log('Servidor corriendo en puerto', process.env.PORT);
+    console.log('Servidor corriendo en puerto', process.env.PORT || 5000);
 
 });
