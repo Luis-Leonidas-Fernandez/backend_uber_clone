@@ -5,7 +5,7 @@ const dbConnection = async() => {
 
     try {
         mongoose.set('strictQuery', true);
-        await mongoose.connect( 'mongodb://134.122.112.7:5000/usuarios',             
+        await mongoose.connect( 'mongodb://134.122.112.7:27017/usuarios',             
         );
 
         console.log('DB Online');
