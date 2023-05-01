@@ -51,7 +51,7 @@ app.use('/api/viajes', require('./routes/viajes'));
 
 
 
-server.listen(process.env.PORT, (err) => {
+server.listen(process.env.PORT || 5000, (err) => {
 
     if (err) throw new Error(err);
 
