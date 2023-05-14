@@ -51,10 +51,10 @@ app.use('/api/viajes', require('./routes/viajes'));
 
 
 
-server.listen(process.env.PORT || 5000, (err) => {
+server.listen(process.env.PORT, (err) => {
 
     if (err) throw new Error(err);
 
-    console.log('Servidor corriendo en puerto', process.env.PORT || 5000);
+    console.log('Servidor corriendo en puerto', process.env.PORT);
 
 });

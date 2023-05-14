@@ -1,11 +1,11 @@
 const  mongoose = require('mongoose');
-const url = "mongodb://134.122.112.7/test";
+
 
 const dbConnection = async() => {
 
     try {
         mongoose.set('strictQuery', true);
-        await mongoose.connect( url,             
+        await mongoose.connect( process.env.DB_URL,             
         );
 
         console.log('DB Online');
