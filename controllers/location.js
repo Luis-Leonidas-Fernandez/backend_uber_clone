@@ -2,12 +2,8 @@ const Address=  require('../models/ubicacion');
 
 const grabarLocation = async ( location ) => {
      
-      const driverLocation = location.mensaje;
-     
-      /* const coordinatesA = driverLocation.coordinates[0];     
-      const coordinatesB = driverLocation.coordinates[1];     
-      const latLng = coordinatesA+ "," +coordinatesB;
-      console.log(latLng); */
+      const driverLocation = location.mensaje;    
+      
 
       const idDriver = location.idDriver;
       console.log(idDriver);
