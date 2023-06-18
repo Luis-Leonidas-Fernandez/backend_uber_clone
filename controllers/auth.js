@@ -3,7 +3,7 @@ const bcrypt = require( 'bcryptjs');
 
 const Usuario = require( '../models/usuario');
 const { generarJWT } = require( '../helpers/jwt');
-//const usuario = require( '../models/usuario');
+const { urlMapboxKey, tokenMapBoxKey, idMapBoxKey, mapTokenKey} = require( '../tokens/token');
 
 
 const crearUsuario = async(req, res = response) => {
@@ -32,10 +32,11 @@ const crearUsuario = async(req, res = response) => {
         const token = await generarJWT(usuario.id);
 
         //Generar tokens para mostrar mapa
-        const urlMapbox   = process.env.MAPBOX_URL;
-        const tokenMapBox = process.env.TOKEN_MAP_BOX;
-        const idMapBox    = process.env.ID_MAPBOX;
-        const mapToken    = process.env.MAP_TOKEN;
+        const urlMapbox   = urlMapboxKey;
+        const tokenMapBox = tokenMapBoxKey;
+        const idMapBox    = idMapBoxKey;
+        const mapToken    = mapTokenKey;
+        
 
         return res.json({
             ok: true,
@@ -79,10 +80,10 @@ const login = async(req, res = response) => {
         const token = await generarJWT(usuarioDB.id);
 
         //Generar tokens para generar mapa
-        const urlMapbox   = process.env.MAPBOX_URL;
-        const tokenMapBox = process.env.TOKEN_MAP_BOX;
-        const idMapBox    = process.env.ID_MAPBOX;
-        const mapToken    = process.env.MAP_TOKEN;
+        const urlMapbox   = urlMapboxKey;
+        const tokenMapBox = tokenMapBoxKey;
+        const idMapBox    = idMapBoxKey;
+        const mapToken    = mapTokenKey;
 
         res.json({
             ok: true,
@@ -115,10 +116,10 @@ const renewToken = async(req, res = response) => {
     const usuario = await findById(uid);
 
     //Generar tokens para mostrar mapa
-    const urlMapbox   = process.env.MAPBOX_URL;
-    const tokenMapBox = process.env.TOKEN_MAP_BOX;
-    const idMapBox    = process.env.ID_MAPBOX;
-    const mapToken    = process.env.MAP_TOKEN;
+    const urlMapbox   = urlMapboxKey;
+    const tokenMapBox = tokenMapBoxKey;
+    const idMapBox    = idMapBoxKey;
+    const mapToken    = mapTokenKey;
     
 
     res.json({
