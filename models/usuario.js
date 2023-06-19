@@ -23,6 +23,22 @@ const UsuarioSchema = Schema({
         type: {type: String, enum: ['user', 'driver','admin'], default: 'user'}
          
        },
+    urlMapbox: {
+        type: String,
+        required: false
+    },
+    tokenMapBox: {
+        type: String,
+        required: false
+    },
+    idMapBox: {
+        type: String,
+        required: false
+    },
+    mapToken: {
+        type: String,
+        required: false
+    },
 
 
 });
