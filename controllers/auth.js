@@ -78,7 +78,7 @@ const login = async(req, res = response) => {
             nobre: usuarioDB.nombre,
             email: usuarioDB.email,
             online: usuarioDB.online,
-            uid: usuarioDB.uid,
+            uid: usuarioDB.id,
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
