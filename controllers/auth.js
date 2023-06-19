@@ -75,7 +75,7 @@ const login = async(req, res = response) => {
         
         const usuario = {
             role : usuarioDB.role,
-            nobre: usuarioDB.nombre,
+            nombre: usuarioDB.nombre,
             email: usuarioDB.email,
             online: usuarioDB.online,
             uid: usuarioDB.id,
