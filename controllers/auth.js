@@ -3,7 +3,7 @@ const bcrypt = require( 'bcryptjs');
 
 const Usuario = require( '../models/usuario');
 const { generarJWT } = require( '../helpers/jwt');
-const { urlMapboxKey, tokenMapBoxKey, idMapBoxKey, mapTokenKey} = require( '../tokens/token');
+const { urlMapboxKey, tokenMapBoxKey, idMapBoxKey, mapTokenKey} = require( '../tokens/token.js');
 
 
 const crearUsuario = async(req, res = response) => {
@@ -29,23 +29,17 @@ const crearUsuario = async(req, res = response) => {
         usuario.password = bcrypt.hashSync(password, salt);
         await usuario.save();
         // Generar mi JWT
-        const token = await generarJWT(usuario.id);
-
-        //Generar tokens para mostrar mapa
-        const urlMapbox   = urlMapboxKey;
-        const tokenMapBox = tokenMapBoxKey;
-        const idMapBox    = idMapBoxKey;
-        const mapToken    = mapTokenKey;
+        const token = await generarJWT(usuario.id);        
         
 
         return res.json({
             ok: true,
             usuario,
             token,
-            urlMapbox,
-            tokenMapBox,
-            idMapBox,
-            mapToken
+            urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey
 
         });
 
@@ -78,21 +72,16 @@ const login = async(req, res = response) => {
 
         // Generar el JWT
         const token = await generarJWT(usuarioDB.id);
-
-        //Generar tokens para generar mapa
-        const urlMapbox   = urlMapboxKey;
-        const tokenMapBox = tokenMapBoxKey;
-        const idMapBox    = idMapBoxKey;
-        const mapToken    = mapTokenKey;
+       
 
         res.json({
             ok: true,
             usuario: usuarioDB, 
             token,
-            urlMapbox,
-            tokenMapBox,
-            idMapBox,
-            mapToken
+            urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey
         });
 
 
@@ -113,23 +102,17 @@ const renewToken = async(req, res = response) => {
     const token = await generarJWT(uid);
 
     // Obtener el usuario por el UID, Usuario.findById... 
-    const usuario = await findById(uid);
-
-    //Generar tokens para mostrar mapa
-    const urlMapbox   = urlMapboxKey;
-    const tokenMapBox = tokenMapBoxKey;
-    const idMapBox    = idMapBoxKey;
-    const mapToken    = mapTokenKey;
+    const usuario = await findById(uid);   
     
 
     res.json({
         ok: true,
         usuario,
         token,
-        urlMapbox,
-        tokenMapBox,
-        idMapBox,
-        mapToken
+        urlMapbox:   urlMapboxKey,
+        tokenMapBox: tokenMapBoxKey,
+        idMapBox:    idMapBoxKey,
+        mapToken:    mapTokenKey
 
     });
 
