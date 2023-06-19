@@ -73,16 +73,26 @@ const login = async(req, res = response) => {
         // Generar el JWT
         const token = await generarJWT(usuarioDB.id);
         
-       
-
-        res.json({
-            ok: true,
-            usuario: usuarioDB, 
-            token,
+        const usuario = {
+            role : usuarioDB.role,
+            nobre: usuarioDB.nombre,
+            email: usuarioDB.email,
+            online: usuarioDB.online,
+            uid: usuarioDB.uid,
             urlMapbox:   "https://api.mapbox.com/styles/v1/luisleonidas/clawgaqa5000f17n1ck3nlma9/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoibHVpc2xlb25pZGFzIiwiYSI6ImNrbnhhcWFiazBpNGoycG40YzVmbng1dW8ifQ.H3n7NYagN5ZjNWTPZxJVAw",
             tokenMapBox: "pk.eyJ1IjoibHVpc2xlb25pZGFzIiwiYSI6ImNrbnhhcWFiazBpNGoycG40YzVmbng1dW8ifQ.H3n7NYagN5ZjNWTPZxJVAw",
             idMapBox:    "sk.eyJ1IjoibHVpc2xlb25pZGFzIiwiYSI6ImNsZHozNmNpdTBpMmgzbnBvbXpwazZqejQifQ.BmLWsc31KgWMRxGg6HQH3w",
             mapToken:    "mapbox.mapbox-streets-v8"
+
+
+        }
+       
+
+        res.json({
+            ok: true,
+            usuario, 
+            token,
+            
         });
 
 
