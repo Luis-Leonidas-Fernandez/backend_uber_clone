@@ -3,7 +3,7 @@ const bcrypt = require('bcryptjs');
 
 const Driver=  require('../models/driver');
 const {generarJWT} = require('../helpers/jwt');
-
+const {urlMapboxKey, tokenMapBoxKey, idMapBoxKey, mapTokenKey} = require('../tokens/token.js');
 
 
 const crearDriver = async(req, res = response) => {
@@ -42,7 +42,8 @@ const data = {
         vehiculo,
         modelo: req.body.modelo.toString(),
         patente: req.body.patente.toString(),
-        licencia: req.body.licencia.toString(),         
+        licencia: req.body.licencia.toString(),
+
 
         }
 
@@ -60,6 +61,10 @@ const data = {
         res.json({
             ok: true,
             driver,
+            urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey,
             token
         });
 
@@ -100,9 +105,15 @@ const loginDriver = async(req, res = response) => {
         // Generar el JWT
         const token = await generarJWT(driverDB.id);
 
+
+
         res.json({
             ok: true,
             driver: driverDB,
+            urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey,
             token
         });
 
@@ -129,6 +140,10 @@ const renewTokenDriver = async(req, res = response) => {
     res.json({
         ok: true,
         driver,
+        urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey,
         token,
 
     });

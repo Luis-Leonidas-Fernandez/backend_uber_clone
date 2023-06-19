@@ -65,7 +65,24 @@ const DriverSchema = Schema({
         type: Number,
         default: 0,
         required: false
-    },   
+    },
+    urlMapbox: {
+        type: String,
+        required: false
+    },
+    tokenMapBox: {
+        type: String,
+        required: false
+    },
+    idMapBox: {
+        type: String,
+        required: false
+    },
+    mapToken: {
+        type: String,
+        required: false
+    },
+   
     
     idAddress: [{
         type: Schema.Types.ObjectId, 
