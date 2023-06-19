@@ -72,16 +72,21 @@ const login = async(req, res = response) => {
 
         // Generar el JWT
         const token = await generarJWT(usuarioDB.id);
-       
+        
+        const mapa = {
+
+            urlMapbox:   urlMapboxKey,
+            tokenMapBox: tokenMapBoxKey,
+            idMapBox:    idMapBoxKey,
+            mapToken:    mapTokenKey
+
+        }
 
         res.json({
             ok: true,
             usuario: usuarioDB, 
             token,
-            urlMapbox:   urlMapboxKey,
-            tokenMapBox: tokenMapBoxKey,
-            idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey
+            access: mapa
         });
 
 
