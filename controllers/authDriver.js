@@ -47,24 +47,39 @@ const data = {
 
         }
 
-        const driver = new Driver(data);
+        const newdriver = new Driver(data);
 
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        driver.password = bcrypt.hashSync(password, salt);
+        newdriver.password = bcrypt.hashSync(password, salt);
 
-        await driver.save();
+        await newdriver.save();
 
         // Generar mi JWT
-        const token = await generarJWT(driver.id);
+        const token = await generarJWT(newdriver.id);
+
+        const driver = {
+            
+            email:     newdriver.email,
+            nombre:    newdriver.nombre,
+            apellido:  newdriver.apellido,
+            nacimiento:newdriver.nacimiento,
+            domicilio: newdriver.domicilio,
+            vehiculo:  newdriver.vehiculo,
+            modelo:    newdriver.modelo,
+            patente:   newdriver.patente,
+            licencia:  newdriver.licencia,
+            _id:       newdriver.id,              
+            urlMapbox: urlMapboxKey,
+            tokenMapBox:tokenMapBoxKey,
+            idMapBox:   idMapBoxKey,
+            mapToken:   mapTokenKey
+
+        }
 
         res.json({
             ok: true,
-            driver,
-            urlMapbox:   urlMapboxKey,
-            tokenMapBox: tokenMapBoxKey,
-            idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey,
+            driver,           
             token
         });
 
