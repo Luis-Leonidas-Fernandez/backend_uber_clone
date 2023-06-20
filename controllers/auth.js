@@ -30,7 +30,7 @@ const crearUsuario = async(req, res = response) => {
         newusuario.password = bcrypt.hashSync(password, salt);
         await newusuario.save();
         // Generar mi JWT
-        const token = await generarJWT(usuario.id);        
+        const token = await generarJWT(newusuario.id);        
                
         const usuario = {
             role : newusuario.role,
