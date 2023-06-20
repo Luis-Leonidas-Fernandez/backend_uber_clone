@@ -24,23 +24,31 @@ const crearUsuario = async(req, res = response) => {
         
         } else {
 
-        const usuario = new Usuario(req.body);
+        const newusuario = new Usuario(req.body);
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
-        usuario.password = bcrypt.hashSync(password, salt);
-        await usuario.save();
+        newusuario.password = bcrypt.hashSync(password, salt);
+        await newusuario.save();
         // Generar mi JWT
         const token = await generarJWT(usuario.id);        
                
-       
-
-        return res.json({
-            ok: true,
-            usuario,
+        const usuario = {
+            role : newusuario.role,
+            nombre: newusuario.nombre,
+            email: newusuario.email,
+            online: newusuario.online,
+            uid: newusuario.id,
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey,
+            mapToken:    mapTokenKey
+
+
+        }
+
+        return res.json({
+            ok: true,
+            usuario,            
             token,
             
 
