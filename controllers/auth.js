@@ -16,6 +16,7 @@ const crearUsuario = async(req, res = response) => {
         
         if (existeEmail) {
 
+
         return res.status(400).json({
             ok: false,
             msg: 'El correo ya está registrado'
@@ -23,22 +24,22 @@ const crearUsuario = async(req, res = response) => {
         
         } else {
 
-        const newUsuario = new Usuario(req.body);
+        const newuser = new Usuario(req.body);
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
         usuario.password = bcrypt.hashSync(password, salt);
         await usuario.save();
         // Generar mi JWT
-        const token = await generarJWT(newUsuario.id);        
+        const token = await generarJWT(newuser.id);        
        
         
         const usuario = {
             
-            nombre: newUsuario.nombre,
-            email: newUsuario.email,
-            online: newUsuario.online,
-            role : newUsuario.role,
-            uid: newUsuario.id,
+            nombre: newuser.nombre,
+            email: newuser.email,
+            online: newuser.online,
+            role : newuser.role,
+            uid: newuser.id,
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
