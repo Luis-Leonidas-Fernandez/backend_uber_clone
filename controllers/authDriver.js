@@ -120,15 +120,36 @@ const loginDriver = async(req, res = response) => {
         // Generar el JWT
         const token = await generarJWT(driverDB.id);
 
+        const driver={
 
-
-        res.json({
-            ok: true,
-            driver: driverDB,
+            _id: driverDB.id,
+            email: driverDB.email,
+            nombre: driverDB.nombre,
+            apellido: driverDB.apellido,
+            nacimiento: driverDB.nacimiento,
+            domicilio: driverDB.domicilio,
+            vehiculo: driverDB.vehiculo,
+            modelo: driverDB.modelo,
+            patente: driverDB.patente,
+            licencia: driverDB.licencia,
+            online: driverDB.online,
+            role: driverDB.role,
+            order: driverDB.order,
+            viajes: driverDB.viajes,
+            idAddress: driverDB.idAddress,
+            time: driverDB.time,
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
             mapToken:    mapTokenKey,
+
+
+        }
+
+
+        res.json({
+            ok: true,
+            driver: driver,            
             token
         });
 
