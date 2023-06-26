@@ -16,7 +16,11 @@ app.use(express.json());
 
 // Node Server
 const server = require('http').createServer(app);
-module.exports.io = require('socket.io')(server);
+module.exports.io = require('socket.io')(server), {
+    cors:{
+        origin: "http//localhost:3001"
+    }
+};
 require('./sockets/socket.js');
 
 

@@ -177,9 +177,9 @@ const renewTokenDriver = async(req, res = response) => {
         ok: true,
         driver,
         urlMapbox:   urlMapboxKey,
-            tokenMapBox: tokenMapBoxKey,
-            idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey,
+        tokenMapBox: tokenMapBoxKey,
+        idMapBox:    idMapBoxKey,
+        mapToken:    mapTokenKey,
         token,
 
     });
