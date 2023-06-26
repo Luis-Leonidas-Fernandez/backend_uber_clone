@@ -4,7 +4,7 @@ const { comprobarJWT } = require('../helpers/jwt');
 const { driverConectado, driverDesconectado } = require('../controllers/socket');
 const { grabarLocation } = require('../controllers/location');
 // Mensajes de Sockets
-io.on('connection', (client) => {
+io.of('/socket.io').on('connection', (client) => {
 
     const [valido, uid] = comprobarJWT(client.handshake.headers['x-token'])
 
