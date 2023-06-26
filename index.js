@@ -1,6 +1,7 @@
 const express = require('express');
 const path = require('path');
 require('dotenv').config();
+const cors = require('cors');
 
 
 // DB Config
@@ -13,14 +14,13 @@ const app = express();
 // Lectura y parseo del Body
 app.use(express.json());
 
+//Cors
+app.use(cors());
+
 
 // Node Server
 const server = require('http').createServer(app);
-module.exports.io = require('socket.io')(server), {
-    cors:{
-        origin: "http//localhost:3001"
-    }
-};
+module.exports.io = require('socket.io')(server);
 require('./sockets/socket.js');
 
 
