@@ -20,14 +20,41 @@ app.use(cors());
 
 // Node Server
 const server = require('http').createServer(app);
-module.exports.io = require('socket.io')(server),{
+module.exports.io = require('socket.io')(server, {
     cors: {
-        origin: "https://inriservice.com/socket.io"
+        origin: "http://localhost:3000",
+        methods: ["GET", "POST",  "PATCH","PUT"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
+});
+
+
+
+/* require('socket.io')(server),{
+    cors: {
+        origin: ["https://inriservice.com:3001"],
+        path: "/api/socket.io"
+        //withCredentials: true para cookies
+        //'*:*'
     }
-};
+}; */
+
+/* const io = require('socket.io')(server, {
+    cors: {
+        origin: "http://localhost:8100",
+        methods: ["GET", "POST"],
+        credentials: true
+    },
+    transports: ['websocket', 'polling'],
+    allowEIO3: true
+}); */
+//io.set("transports", ["websocket"]);
+//io.set('origins', 'https://inriservice.com:80');
 require('./sockets/socket.js');
 
-
+//https://stackoverflow.com/questions/24058157/socket-io-node-js-cross-origin-request-blocked
 
 
 // Path público
