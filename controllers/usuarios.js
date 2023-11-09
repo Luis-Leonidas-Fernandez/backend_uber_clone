@@ -19,6 +19,7 @@ const getUsuarios = async ( req, res = response ) => {
 
 
 
+
 module.exports = {
     getUsuarios
 }

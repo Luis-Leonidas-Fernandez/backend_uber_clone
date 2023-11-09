@@ -5,7 +5,8 @@ const Driver = require( '../models/driver');
 const driverConectado = async(uid = '') => {
 
     const driver = await Driver.findById(uid);
-    driver.online = true;
+    driver.online = true;    
+    driver.status = 'disponible';
     await driver.save();
     return driver;
 }
@@ -13,6 +14,7 @@ const driverConectado = async(uid = '') => {
 const driverDesconectado = async(uid = '') => {
     const driver = await Driver.findById(uid);
     driver.online = false;
+    driver.status = 'no disponible';
     await driver.save();
     return driver;
 }

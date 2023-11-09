@@ -3,17 +3,22 @@ const Driver = require('../models/driver');
 
 const selectDriver = async ( req, res = response ) => {
 
-    const desde = Number( req.query.desde ) || 0;
+   
+    const idDriverNull = [{idDriver: '1' }];
 
     const drivers = await Driver.find({ $and: [{ _id: { $ne: req.uid }}, {online: true},{order: 'libre'}]})
         .sort({online: 'desc', order: -1, viajes: 1})
-        .skip(desde)
-        .limit(20)
+        .limit(20)        
+       
+        const len = drivers.length;    
+        
 
-    
-    res.json({
-        drivers
-    })
+        if(len === 0){
+            return res.json({idDriverNull});
+        }
+       
+        return res.json({drivers});        
+        
 }
 
 

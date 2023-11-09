@@ -3,13 +3,13 @@ const ObjectId = require('mongodb').ObjectId;
 
 const obtenerViajeDriver = async ( req, res = response ) => {
 
-   const _id = req.params._id;
-  
- 
+   const id = req.params._id.trim();
+   const idObject = new ObjectId(id);
+   
    const address = await Address.aggregate([
 
             {
-                $match : {$and: [{idDriver: ObjectId(_id)}, {estado: false}] }},
+                $match : {$and: [{idDriver: idObject}, {estado: false}] }},
             
             {
                 $lookup:
@@ -29,21 +29,42 @@ const obtenerViajeDriver = async ( req, res = response ) => {
                     email: 1,
                     online: 1,
                     estado: 1,
+                    cupon: 1,
                     ubicacion: 1,
                     createdAt: 1,
                     updatedAt: 1,
-                    idDriver: 1,
-                                        
-                    
-                    
-
-                }},
-                       
+                    idDriver: 1,                                    
+                   
+                }},                       
            
-]);   
-        console.log(address); 
-        res.json({ address})
+    ]);   
+    
+   
+    const orderUser = Object.assign({}, ...address); // data convertida a objeto    
+    
 
+    const order = Object.keys(orderUser).length; // data convertida a array lenght
+   
+
+    const data = order ?? null;
+    
+
+    if(order !== 0) {      
+                    
+                
+        return res.status(200).json({ orderUser});
+
+    }else {    
+       
+        const emptyObject = {
+            idDriver: '0',
+            ok: false,
+            msg: 'Address no encontrada'
+        }
+        
+        return res.status(201).json({ emptyObject});
+    }
+    
 }
 
 module.exports ={

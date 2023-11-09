@@ -10,10 +10,10 @@ const { postUbicacion, getUbicaciones, removeAddress }= require('../controllers/
 const router = Router();
 
 //USER ENTERS AN ORDER
-router.post('/lugar', validarJWT, validarDistanciaEntreCoordendas, postUbicacion);
+router.post('/lugar', validarJWT, postUbicacion);
 router.put('/remove/address', validarJWT, removeAddress);
 
 //GET ALL THE ORDERS
-router.get('/', validarJWT, getUbicaciones );
+router.get('/', getUbicaciones );
 
 module.exports =router;

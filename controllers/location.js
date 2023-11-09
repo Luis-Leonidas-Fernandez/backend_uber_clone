@@ -2,25 +2,22 @@ const Address=  require('../models/ubicacion');
 
 const grabarLocation = async ( location ) => {
      
-      const driverLocation = location.mensaje;    
-      
-
-      const idDriver = location.idDriver;
-      console.log(idDriver);
-
-      const idOrder = location._id;
-      console.log(idOrder);
-        
+      const driverLocation  = location.mensaje;
+      const idOrder = location.idOrder;      
+      //const idDriver = location.idDriver;     
+            
+     
         
       try {
+          
+         
           
           const data = await Address.findOneAndUpdate({_id: idOrder}, 
 
           {$addToSet: {
             mensaje: driverLocation             
         }});
-
-          console.log(data);      
+           
           return true;
   
       } catch (error) {

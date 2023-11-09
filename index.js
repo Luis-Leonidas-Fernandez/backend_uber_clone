@@ -3,6 +3,14 @@ const path = require('path');
 require('dotenv').config();
 const cors = require('cors');
 
+const {dispatchDrivers}  = require('./service/dispatch_server');
+
+const {getPrice}        = require('./Generators/price');
+const { createVauchers}  = require('./service/cupon_server');
+const { createPrice}    = require('./service/price_server');
+
+const cron     = require("node-cron");
+
 
 // DB Config
 require('./database/config').dbConnection();
@@ -20,41 +28,9 @@ app.use(cors());
 
 // Node Server
 const server = require('http').createServer(app);
-module.exports.io = require('socket.io')(server, {
-    cors: {
-        origin: "http://localhost:3000",
-        methods: ["GET", "POST",  "PATCH","PUT"],
-        credentials: true
-    },
-    transports: ['websocket', 'polling'],
-    allowEIO3: true
-});
+module.exports.io = require('socket.io')(server);
 
-
-
-/* require('socket.io')(server),{
-    cors: {
-        origin: ["https://inriservice.com:3001"],
-        path: "/api/socket.io"
-        //withCredentials: true para cookies
-        //'*:*'
-    }
-}; */
-
-/* const io = require('socket.io')(server, {
-    cors: {
-        origin: "http://localhost:8100",
-        methods: ["GET", "POST"],
-        credentials: true
-    },
-    transports: ['websocket', 'polling'],
-    allowEIO3: true
-}); */
-//io.set("transports", ["websocket"]);
-//io.set('origins', 'https://inriservice.com:80');
 require('./sockets/socket.js');
-
-//https://stackoverflow.com/questions/24058157/socket-io-node-js-cross-origin-request-blocked
 
 
 // Path público
@@ -72,6 +48,7 @@ app.use('/api/ubicaciones', require('./routes/ubicaciones'));
 app.use('/api/logindriver', require('./routes/authDriver'));
 app.use('/api/drivers', require('./routes/drivers'));
 app.use('/api/status', require('./routes/estadoViajes'));
+app.use('/api/location', require('./routes/locationDriver'));
 
 
 // Mis Rutas Admin
@@ -81,15 +58,54 @@ app.use('/api/travel', require('./routes/bookingDriver'));
 // Obtener viajes desde distintos roles
 app.use('/api/viajes', require('./routes/viajes'));
 
-
-
-
+// Asignar vaucher
+app.use('/api/cupon', require('./routes/cupon'));
 
 
 server.listen(process.env.PORT, (err) => {
 
-    if (err) throw new Error(err);
+    if (err) throw new Error(err);    
 
-    console.log('Servidor corriendo en puerto', process.env.PORT);
+});
 
+//servicio de despacho de ordenes
+
+ cron.schedule("*/1 * * * *", function () {
+    
+    dispatchDrivers();              
+    
+}); 
+
+
+cron.schedule("*/3 */23 * * *", function () {  
+         
+   //GUARDA EN STORAGE EL PRECIO DEL DOLAR BLUE
+  
+   getPrice();
+   
+});
+
+
+//servicio de despacho de vauchers cada 24 hs horario: 00:00 /"0 0 * * *"
+
+cron.schedule("*/30 */3 */23 * * *", function ()  { 
+     
+     //CREA UN VAUCHER RANDOM 01FG-25SD-3528-ADF25
+
+   const time = new Date();   
+
+   createVauchers();
+    
+});
+
+
+cron.schedule("*/40 */3 */23 * * *", function () {    
+     
+    // GUARDA EN COLLECTION USUARIO EL PRECIO DEL VAUCHER
+
+    const time = new Date();  
+
+    createPrice();
+  
+   
 });

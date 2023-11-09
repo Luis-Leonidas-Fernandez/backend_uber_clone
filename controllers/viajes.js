@@ -1,18 +1,16 @@
+const { response } = require( 'express');
 const Address = require('../models/ubicacion');
 const ObjectId = require('mongodb').ObjectId;
 
 
+const obtenerViajeUsuario = async(req, res= response) => {
 
+    const _id = req.params._id;    
 
-const obtenerViajeUsuario = async(req, res) => {
-
-    const _id = req.params._id;
-    
-
-    const orderUser = await Address.aggregate([
+    const respuesta = await Address.aggregate([
 
         {
-            $match : {$and: [{miId: ObjectId(_id)}, {estado: false}] }},
+            $match : {$and: [{miId: new ObjectId(_id)}, {estado: false}] }},
         
         {
             $lookup:
@@ -50,8 +48,47 @@ const obtenerViajeUsuario = async(req, res) => {
                    
        
 ]);   
-    console.log(orderUser); 
-    res.json({ orderUser})
+const resultado = Object.assign({}, ...respuesta);
+const order = Object.keys(respuesta).length; 
+
+const data = order ?? null;
+
+if(order !== 0) {      
+                    
+    const ubicacion = resultado.mensaje.pop();
+    
+    const address = {
+         ok: true,
+        _id: resultado._id,
+         email: resultado.email,
+         nombre: resultado.nombre,
+         apellido: resultado.apellido,
+         vehiculo: resultado.vehiculo,
+         modelo: resultado.modelo,
+         patente: resultado.patente,
+         online: resultado.online,
+         order: resultado.order,
+         estado: resultado.estado,
+         createdAt: resultado.createdAt,
+         updatedAt: resultado.updatedAt,
+         mensaje: ubicacion,
+         idDriver: resultado.idDriver
+
+        };
+
+    return res.status(200).json({ address});
+
+}else {    
+   
+    const emptyObject = {
+        idDriver: '0',
+        ok: false,
+        msg: 'Address no encontrada'
+    }
+    
+    return res.status(201).json({ emptyObject});
+}
+   
 
 }
 

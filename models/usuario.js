@@ -39,6 +39,11 @@ const UsuarioSchema = Schema({
         type: String,
         required: false
     },
+    cupon:{
+        type: Array,
+        required: false,
+        default: []
+    }
 
 
 });

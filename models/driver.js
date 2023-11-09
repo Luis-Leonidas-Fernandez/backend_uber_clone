@@ -51,13 +51,19 @@ const DriverSchema = Schema({
     role: {
         type: String,
         enum: ['user', 'driver','admin'],
-        default: 'user'
+        default: 'driver'
     },   
 
     order: {    
         type: String,
-        enum: ['en-preparacion', 'libre', 'en-camino' ],
+        enum: ['en-preparacion', 'libre', 'en-camino', 'llego-conductor' ],
         default: 'en-preparacion'
+    },
+
+    status: {
+        type: String,
+        enum: ['disponible', 'no disponible' ],
+        default: 'disponible'
     },
     
 
@@ -89,6 +95,12 @@ const DriverSchema = Schema({
         ref: 'Address',      
         required: false,
     }],
+
+    cupon:{
+        type: Array,
+        required: false,
+        default: [""]
+    },
 
        time : { type : Date, default: Date.now }
 });

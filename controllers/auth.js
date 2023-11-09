@@ -10,7 +10,7 @@ const crearUsuario = async(req, res = response) => {
 
 
         //unica funcion modificada 16/05/2023    
-        const { email, password, } = req.body;    
+        const { email, password, } = req.body;  
 
         const existeEmail = await Usuario.findOne({ email });
         
@@ -41,7 +41,8 @@ const crearUsuario = async(req, res = response) => {
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey
+            mapToken:    mapTokenKey,
+            cupon: newusuario.cupon
 
 
         }
@@ -89,11 +90,13 @@ const login = async(req, res = response) => {
             nombre: usuarioDB.nombre,
             email: usuarioDB.email,
             online: usuarioDB.online,
+            cupon: usuarioDB.cupon,
             uid: usuarioDB.id,
             urlMapbox:   urlMapboxKey,
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
-            mapToken:    mapTokenKey
+            mapToken:    mapTokenKey,
+            
 
 
         }
@@ -108,7 +111,7 @@ const login = async(req, res = response) => {
 
 
     } catch (error) {
-        console.log(error);
+        
         return res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
@@ -134,7 +137,8 @@ const renewToken = async(req, res = response) => {
         urlMapbox:   urlMapboxKey,
         tokenMapBox: tokenMapBoxKey,
         idMapBox:    idMapBoxKey,
-        mapToken:    mapTokenKey
+        mapToken:    mapTokenKey,
+        
 
     });
 

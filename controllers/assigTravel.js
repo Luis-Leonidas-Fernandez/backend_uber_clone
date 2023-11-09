@@ -25,7 +25,7 @@ const assigClient = async(req = request, res = response) => {
         });
     
         } catch (error) {
-            console.log(error);
+            
             res.status(500).json({
                 ok: false,
                 msg: 'Hable con el administrador'
@@ -38,11 +38,11 @@ const removeClient = async(req = request, res = response) => {
    
     const { _id } = req.params;       
     const { idAddress }= req.body;    
-    console.log(idAddress)
+    
     try {
 
        const address = await Driver.findByIdAndUpdate({_id: _id}, {$pull: { idAddress: idAddress }});                       
-      console.log(address)
+     
        if (!address){
          return res.status(400).json({
             ok: false,
@@ -58,7 +58,7 @@ const removeClient = async(req = request, res = response) => {
         });
     
         } catch (error) {
-            console.log(error);
+           
             res.status(500).json({
                 ok: false,
                 msg: 'Hable con el administrador'

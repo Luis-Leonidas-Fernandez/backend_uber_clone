@@ -32,18 +32,15 @@ io.on('connection', (client) => {
         if(location ){
             await grabarLocation(location[0]);
         }else{
-            false
-        }
-                         
-        
-        //io.to(payload.para).emit('driver-location', payload);
+            false;
+        }                        
+               
 
     });
    
 
 
-    client.on('disconnect', () => {
-        console.log('Driver Desconectado');
+    client.on('disconnect', () => {       
         driverDesconectado(uid);
     });
    

@@ -8,7 +8,7 @@ const dbConnection = async() => {
         await mongoose.connect( process.env.DB_URL,             
         );
 
-        console.log('DB Online');
+       
         
 
     } catch (error) {
