@@ -70,42 +70,50 @@ server.listen(process.env.PORT, (err) => {
 
 //servicio de despacho de ordenes
 
- cron.schedule("*/1 * * * *", function () {
+ cron.schedule("*0 */1 * * * *", async function () {
     
-    dispatchDrivers();              
+    await dispatchDrivers();              
     
+},{
+    scheduled: true,
+    timezone: "America/Argentina/Buenos_Aires"
 }); 
 
 
-cron.schedule("*/3 */23 * * *", function () {  
+cron.schedule("*15 */1 * * * *", async function () {  
          
    //GUARDA EN STORAGE EL PRECIO DEL DOLAR BLUE
   
-   getPrice();
+  await getPrice();
    
+},{
+    scheduled: true,
+    timezone: "America/Argentina/Buenos_Aires"
 });
 
 
 //servicio de despacho de vauchers cada 24 hs horario: 00:00 /"0 0 * * *"
 
-cron.schedule("*/30 */3 */23 * * *", function ()  { 
+cron.schedule("*30 *3 */23 * * *", async function ()  { 
      
      //CREA UN VAUCHER RANDOM 01FG-25SD-3528-ADF25
 
-   const time = new Date();   
-
-   createVauchers();
+   await createVauchers();
     
+},{
+    scheduled: true,
+    timezone: "America/Argentina/Buenos_Aires"
 });
 
 
-cron.schedule("*/40 */3 */23 * * *", function () {    
+cron.schedule("*40 *3 */23 * * *", async function () {    
      
     // GUARDA EN COLLECTION USUARIO EL PRECIO DEL VAUCHER
 
-    const time = new Date();  
-
-    createPrice();
+    await createPrice();
   
    
+},{
+    scheduled: true,
+    timezone: "America/Argentina/Buenos_Aires"
 });

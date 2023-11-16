@@ -6,7 +6,7 @@ const { getActiveUsers } = require('../controllers/cupones');
 const db = new LocalStorage('./dolar');
 
 const priceAxios = axios.create({
-    baseURL: "http://localhost:3000/api/cupon/price",
+    baseURL: "https://www.inriservice.com/api/cupon/price",
     timeout: 5000,
     headers: {'Content-Type': 'application/json'}
 }) 

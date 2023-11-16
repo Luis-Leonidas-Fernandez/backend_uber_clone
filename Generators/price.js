@@ -4,7 +4,7 @@ const {LocalStorage} = require('node-localstorage');
 
 
  const dolarBlueAxios = axios.create({
-    baseURL: "http://dolarapi.com/v1/dolares/blue",
+    baseURL: "https://dolarapi.com/v1/dolares/blue",
     timeout: 5000
 })  
 

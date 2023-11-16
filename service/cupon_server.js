@@ -3,13 +3,13 @@ const { getActiveUsers } = require('../controllers/cupones');
 
 
  const cuponAxios = axios.create({
-    baseURL: "http://localhost:3000/api/cupon",
+    baseURL: "https://www.inriservice.com/api/cupon",
     timeout: 5000,
     headers: {'Content-Type': 'application/json'}
 })
 
 const deletedAxios = axios.create({
-    baseURL: "http://localhost:3000/api/cupon/vauchers",
+    baseURL: "https://www.inriservice.com/api/cupon/vauchers",
     timeout: 5000,
     headers: {'Content-Type': 'application/json'}
 })
