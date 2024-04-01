@@ -48,7 +48,7 @@ const data = {
         }
 
         const newdriver = new Driver(data);
-
+        console.log("nuevo conductor:", newdriver);
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
         newdriver.password = bcrypt.hashSync(password, salt);
@@ -69,11 +69,13 @@ const data = {
             modelo:    newdriver.modelo,
             patente:   newdriver.patente,
             licencia:  newdriver.licencia,
+            base:      newdriver.base,
             _id:       newdriver.id,              
             urlMapbox: urlMapboxKey,
             tokenMapBox:tokenMapBoxKey,
             idMapBox:   idMapBoxKey,
-            mapToken:   mapTokenKey
+            mapToken:   mapTokenKey,
+            base: ""
 
         }
 
@@ -142,6 +144,7 @@ const loginDriver = async(req, res = response) => {
             tokenMapBox: tokenMapBoxKey,
             idMapBox:    idMapBoxKey,
             mapToken:    mapTokenKey,
+            base:        driverDB.base
 
 
         }

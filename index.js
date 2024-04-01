@@ -44,6 +44,7 @@ app.use('/api/login', require('./routes/auth'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/ubicaciones', require('./routes/ubicaciones'));
 
+
 // Mis Rutas Drivers
 app.use('/api/logindriver', require('./routes/authDriver'));
 app.use('/api/drivers', require('./routes/drivers'));
@@ -52,8 +53,11 @@ app.use('/api/location', require('./routes/locationDriver'));
 
 
 // Mis Rutas Admin
+app.use('/api/loginAdmin', require('./routes/authAdmin.js'));
+app.use('/api/base', require('./routes/base.js'));
 app.use('/api/booking', require('./routes/booking'));
 app.use('/api/travel', require('./routes/bookingDriver'));
+
 
 // Obtener viajes desde distintos roles
 app.use('/api/viajes', require('./routes/viajes'));
@@ -69,8 +73,13 @@ server.listen(process.env.PORT, (err) => {
 });
 
 //servicio de despacho de ordenes
+<<<<<<< HEAD
 // *0 
  cron.schedule("*/1 * * * *", async function () {
+=======
+
+ cron.schedule(" */1 * * * *", async function () {
+>>>>>>> 9734d31e13bb922cc87c30e383eff11051c39752
     
     await dispatchDrivers();              
     

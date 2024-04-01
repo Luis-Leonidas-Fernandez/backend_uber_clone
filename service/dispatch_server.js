@@ -1,6 +1,6 @@
 const axios    = require('axios').default;
 const { getUbicacionesAutomatic }= require('../controllers/authCoordenadas');
-const Driver = require('../models/driver');
+//const Driver = require('../models/driver');
 
 const mainAxios = axios.create({
     baseURL: "https://www.inriservice.com/api/booking",
@@ -9,9 +9,8 @@ const mainAxios = axios.create({
 
     
     
-    const  dispatchDrivers = async () => {
+    const  dispatchDrivers = async () => {     
      
-     Driver.updateMany({}, {$set: { cupon: "" }});
 
      const id = await getOrders();
      const notExistOrder = {msg:  'No existen ordenes para despachar'};      
