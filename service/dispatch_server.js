@@ -3,7 +3,7 @@ const { getUbicacionesAutomatic }= require('../controllers/authCoordenadas');
 const Driver = require('../models/driver');
 
 const mainAxios = axios.create({
-    baseURL: "http://localhost:3000/api/booking",
+    baseURL: "https://www.inriservice.com/api/booking",
     timeout: 5000
 })
 
