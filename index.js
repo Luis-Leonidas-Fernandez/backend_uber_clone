@@ -53,8 +53,8 @@ app.use('/api/location', require('./routes/locationDriver'));
 
 
 // Mis Rutas Admin
-app.use('/api/loginAdmin', require('./routes/authAdmin.js'));
-app.use('/api/base', require('./routes/base.js'));
+app.use('/api/loginadmin', require('./routes/authAdmin'));
+app.use('/api/base', require('./routes/base'));
 app.use('/api/booking', require('./routes/booking'));
 app.use('/api/travel', require('./routes/bookingDriver'));
 

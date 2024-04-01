@@ -1,6 +1,5 @@
 const { response } = require( 'express');
 const bcrypt = require( 'bcryptjs');
-
 const Admin = require( '../models/admin');
 const { generarJWT } = require( '../helpers/jwt');
 
@@ -23,29 +22,33 @@ const crearAdmin = async(req, res = response) => {
     
     } else {
 
-    const newAdmin = new Admin(req.body);
+    const data = {
+        email: req.body.email,
+        password: req.body.password,
+        nombre: req.body.nombre
+    }    
+
+    const newadmin = new Admin(data);
 
     // Encriptar contraseña
     const salt = bcrypt.genSaltSync();
-
-    newAdmin.password = bcrypt.hashSync(password, salt);
-    await newAdmin.save();
+    newadmin.password = bcrypt.hashSync(password, salt);
+    await newadmin.save();
 
     // Generar mi JWT
-    const token = await generarJWT(newAdmin.id);        
+    const token = await generarJWT(newadmin.id);        
            
     const admin = {
        
-        nombre: newAdmin.nombre,
-        email:  newAdmin.email,       
-        uid:    newAdmin.id,
+        nombre: newadmin.nombre,
+        email:  newadmin.email,       
+        uid:    newadmin.id,
     }
 
     return res.json({
         ok: true,
         admin,            
-        token,
-        
+        token,        
 
     });
 
