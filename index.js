@@ -44,6 +44,7 @@ app.use('/api/login', require('./routes/auth'));
 app.use('/api/usuarios', require('./routes/usuarios'));
 app.use('/api/ubicaciones', require('./routes/ubicaciones'));
 
+
 // Mis Rutas Drivers
 app.use('/api/logindriver', require('./routes/authDriver'));
 app.use('/api/drivers', require('./routes/drivers'));
@@ -52,8 +53,11 @@ app.use('/api/location', require('./routes/locationDriver'));
 
 
 // Mis Rutas Admin
+app.use('/api/loginAdmin', require('./routes/authAdmin.js'));
+app.use('/api/base', require('./routes/base.js'));
 app.use('/api/booking', require('./routes/booking'));
 app.use('/api/travel', require('./routes/bookingDriver'));
+
 
 // Obtener viajes desde distintos roles
 app.use('/api/viajes', require('./routes/viajes'));
@@ -70,7 +74,7 @@ server.listen(process.env.PORT, (err) => {
 
 //servicio de despacho de ordenes
 
- cron.schedule("*0 */1 * * * *", async function () {
+ cron.schedule(" */1 * * * *", async function () {
     
     await dispatchDrivers();              
     
@@ -80,7 +84,7 @@ server.listen(process.env.PORT, (err) => {
 }); 
 
 
-cron.schedule("*15 */1 * * * *", async function () {  
+cron.schedule("* */22 * * *", async function () {  
          
    //GUARDA EN STORAGE EL PRECIO DEL DOLAR BLUE
   
@@ -94,7 +98,7 @@ cron.schedule("*15 */1 * * * *", async function () {
 
 //servicio de despacho de vauchers cada 24 hs horario: 00:00 /"0 0 * * *"
 
-cron.schedule("*30 *3 */23 * * *", async function ()  { 
+cron.schedule("* */23 * * *", async function ()  { 
      
      //CREA UN VAUCHER RANDOM 01FG-25SD-3528-ADF25
 
@@ -106,7 +110,7 @@ cron.schedule("*30 *3 */23 * * *", async function ()  {
 });
 
 
-cron.schedule("*40 *3 */23 * * *", async function () {    
+cron.schedule("0 0 * * *", async function () {    
      
     // GUARDA EN COLLECTION USUARIO EL PRECIO DEL VAUCHER
 

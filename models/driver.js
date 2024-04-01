@@ -101,6 +101,13 @@ const DriverSchema = Schema({
         required: false,
         default: [""]
     },
+    
+    base: {
+        type: Schema.Types.ObjectId, 
+        ref: 'base',      
+        required: false,
+        
+    },
 
        time : { type : Date, default: Date.now }
 });

@@ -21,7 +21,7 @@ const createPrice = async () =>{
    
     // Obteniendo ID USERS
     const usersDb = await getAllUsers();          
-    const usuarios = usersDb[0];
+    const usuarios = usersDb[0]?? null;
     
     if(usuarios[0].id !== null){               
         
