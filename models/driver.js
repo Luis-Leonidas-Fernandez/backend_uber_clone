@@ -113,7 +113,7 @@ const DriverSchema = Schema({
 });
 
 DriverSchema.method('toJSON', function() {
-    const { __v, password, ...object } = this.toObject();
+    const { __v, _password, ...object } = this.toObject();
     //object.uuid = _id;
     return object;
 })

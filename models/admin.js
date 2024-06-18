@@ -21,6 +21,12 @@ const AdminSchema = Schema({
          
        },
 
+    base: {
+        type: Number,
+        required: true,
+        default: 0
+    },   
+
    
 
 });

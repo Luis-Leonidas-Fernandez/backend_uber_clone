@@ -1,6 +1,7 @@
 const Address = require('../models/ubicacion');
 const ObjectId = require('mongodb').ObjectId;
 
+
 const obtenerViajeDriver = async ( req, res = response ) => {
 
    const id = req.params._id.trim();

@@ -8,8 +8,9 @@ const crearAdmin = async(req, res = response) => {
 
 
     //unica funcion modificada 16/05/2023    
-    const { email, password, } = req.body;  
-
+    const { email, password} = req.body;  
+    
+    console.log('AQUI PASO');
     const existeEmail = await Admin.findOne({ email });
     
     if (existeEmail) {
@@ -43,6 +44,8 @@ const crearAdmin = async(req, res = response) => {
         nombre: newadmin.nombre,
         email:  newadmin.email,       
         uid:    newadmin.id,
+        base:   newadmin.base
+        
     }
 
     return res.json({
@@ -88,7 +91,8 @@ try {
         
         nombre: adminDB.nombre,
         email:  adminDB.email,   
-        uid:    adminDB.id,          
+        uid:    adminDB.id,
+        base:   adminDB.base          
         
 
     }
