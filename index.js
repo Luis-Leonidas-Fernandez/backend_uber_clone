@@ -8,6 +8,7 @@ const {dispatchDrivers}  = require('./service/dispatch_server');
 const {getPrice}        = require('./Generators/price');
 const { createVauchers}  = require('./service/cupon_server');
 const { createPrice}    = require('./service/price_server');
+const { createInvoiceJob, createInvoicePdfJob }    = require('./service/invoice_server');
 
 const cron     = require("node-cron");
 
@@ -54,6 +55,7 @@ app.use('/api/location', require('./routes/locationDriver'));
 
 // Mis Rutas Admin
 app.use('/api/loginadmin', require('./routes/authAdmin'));
+//app.use( this.paths.auth, require('./routes/authAdmin'));
 app.use('/api/base', require('./routes/base'));
 app.use('/api/booking', require('./routes/booking'));
 app.use('/api/travel', require('./routes/bookingDriver'));
@@ -64,6 +66,10 @@ app.use('/api/viajes', require('./routes/viajes'));
 
 // Asignar vaucher
 app.use('/api/cupon', require('./routes/cupon'));
+
+//Asignar Factura
+app.use('/api/invoice', require('./routes/invoice'));
+
 
 
 server.listen(process.env.PORT, (err) => {
@@ -78,8 +84,12 @@ server.listen(process.env.PORT, (err) => {
  cron.schedule("*/1 * * * *", async function () {
 =======
 
+<<<<<<< HEAD
  cron.schedule(" */1 * * * *", async function () {
 >>>>>>> 9734d31e13bb922cc87c30e383eff11051c39752
+=======
+ cron.schedule("*/1 * * * *", async function () {
+>>>>>>> 8e814f2041eee51e5dde4e0b571cc698ae3fb8f4
     
     await dispatchDrivers();              
     
@@ -125,4 +135,29 @@ cron.schedule("0 0 * * *", async function () {
 },{
     scheduled: true,
     timezone: "America/Argentina/Buenos_Aires"
+});
+
+cron.schedule("* * 25 * *", async function () {    
+     
+     //GUARDA EN COLLECTION INVOICE LA FACTURA MENSUAL A COBRAR
+
+    await createInvoiceJob();
+  
+   
+},{
+   scheduled: true,
+   timezone: "America/Argentina/Buenos_Aires"
+});
+
+
+cron.schedule("* * 26 * *", async function () {    
+     
+    //GUARDA PDF FACTURA EN DIRECTORIO 
+
+   await createInvoicePdfJob();
+ 
+  
+},{
+  scheduled: true,
+  timezone: "America/Argentina/Buenos_Aires"
 });
