@@ -102,7 +102,7 @@ const login = async(req, res = response) => {
         }
        
 
-        res.json({
+        res.status(200).json({
             ok: true,
             usuario, 
             token,
@@ -112,7 +112,7 @@ const login = async(req, res = response) => {
 
     } catch (error) {
         
-        return res.status(500).json({
+       return res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'
         })
