@@ -15,14 +15,18 @@ const ZonaSchema = Schema({
         
     },  
 
-    ubicacion: {         
+    ubicacion: {
+        type:{
+            type: String,            
+            enum: ['Point'], 
+            required: true,
+        },             
         coordinates: {
             type: String,
-            required: false
-          
+            required: false,
+            index: '2dsphere'            
     },    
-        type: ['Point'], 
-          required: false
+        
     },
     
    

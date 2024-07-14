@@ -48,7 +48,7 @@ const data = {
         }
 
         const newdriver = new Driver(data);
-        console.log("nuevo conductor:", newdriver);
+        
         // Encriptar contraseña
         const salt = bcrypt.genSaltSync();
         newdriver.password = bcrypt.hashSync(password, salt);

@@ -17,7 +17,11 @@ const AdminSchema = Schema({
     },
     
     role: {
-        type: {type: String, enum: ['user', 'driver','admin'], default: 'admin'}
+        type: {
+            type: String,
+            enum: ['user', 'driver','admin'],
+            default: 'admin'
+        }
          
        },
 

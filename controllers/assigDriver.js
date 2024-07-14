@@ -1,7 +1,9 @@
 const { response } = require('express');
-const Address = require('../models/ubicacion');
-const Driver = require('../models/driver');
-const mongoose = require('mongoose');
+const Address      = require('../models/ubicacion');
+const Driver       = require('../models/driver');
+const { buscarZonas, buscarZonaCercana } = require('../middlewares/buscar-zona');
+const { searchDrivers, updateStatusDriverAsing  } = require('../middlewares/drivers-to-base');
+const { addDriverToAddress, } = require('../middlewares/address');
 
 const assigDriver = async(req = request, res = response) => {          
    
@@ -47,97 +49,93 @@ const assigDriver = async(req = request, res = response) => {
 
 const assigDriverAutomatic = async( req = request, res = response ) => {          
    
-    const  miId = req.params._id;   
+    const  miId = req.params._id;
+    const ubicacion = req.body;    
+    
     const  noDisponible = 'no disponible';   
     const  driversNotAvailable = 'Conductores no disponibles';
 
     try {
-       
-       const resultado = await searchDriver(miId);      
-           
-       
-        if(resultado[0]._id === '1'){
 
-           
-            return res.json({ ok: false, driversNotAvailable, miId});
+        ///***PRIMER PARTE BUSCAR ZONA***
 
-        } else {
+        //Validar que la  Zona exista
 
-            const idDriver = resultado[0]._id.toString();           
+        const zonaInscripta = await buscarZonas();
+        if(!zonaInscripta) return;
+
+        //Busca Zona mas Cercana - Extrae idBase y Distancia de la base
+
+        const zona = await buscarZonaCercana(ubicacion);      
+
+        const idBase = zona.base[0].basesId;
+        const distancia   = zona.dist;  
+
+        
+        if(distancia > 3000) {
+
+          return res.json({
+            ok: false,
+            driversNotAvailable,
+            miId
+          })
+
+        };
+        
+        ///*** SEGUNDA PARTE BUSCAR Y ASIGNAR CONDUCTOR***
+
+       // Buscar Conductores disponibles de una determinada base       
+       const driverList = await searchDrivers(idBase);      
+              
+
+       if(driverList.length > 0){
+
+            //Obteniendo Id de un Conductor
+         
+            const idDriver = driverList[0]._id.toString();           
             const id  = miId;
                                  
+            // Agregando Un Conductor a una address
 
-            const userAddress = await Address.findOneAndUpdate({miId: id },
-                {$set: { idDriver: idDriver, estado: false }}, { new: true });     
+            const userAddress = await addDriverToAddress(id,idDriver);
+            
+            if(userAddress.length == 0) {
+               
+              return res.json({
+                ok: false,
+                driversNotAvailable,
+                miId
+             });  
+            }
                 
-            // TODO: ACTUALIZAR DRIVER STATUS: NO DISPONIBLES
+            // Actualizando el Modelo DRIVER en su campo Status: NO DISPONIBLES
 
-            await Driver.findOneAndUpdate({_id: idDriver}, {$set: {status: noDisponible}}, { upsert: true });
+            await updateStatusDriverAsing(idDriver, noDisponible);
                 
          
-                const data = {
-                 userAddress                
+             const data = {
+                userAddress                
              }  
 
             return res.json({ok: true , data});
             
-        }      
-    
-        } catch (error) {
+        } else {
+
+            return res.json({ ok: false, driversNotAvailable, miId});
+        }
+        
+    }catch (error) {
            
-            res.status(500).json({
-                ok: false,
-                msg: 'Hable con el administrador'
-            });
-    }
+        res.status(500).json({
+            ok: false,
+            msg: 'Hable con el administrador'
+        });
+    } 
           
 }
 
 
-const searchDriver = async (miId) => {   
 
-    const idUser = miId;    
-   
-    const drivers = await Driver.find({ $and: [{ _id: { $ne: idUser }}, {online: true},{order: 'libre'}, {status: 'disponible'}]})
-    .sort({online: 'desc', order: -1, viajes: 1})
-    .limit(20)
-    .exec()        
-    
-    const obj =  await comprobarNullDriver(drivers);        
-    
-    return obj;   
-           
-      
-}
-
-const comprobarNullDriver = async (drivers) => {
-
-    const driverArray = [];
-   
-    
-    const idDriverNull =  [{_id: "1"}];    
-    let len = drivers.length;
-   
-    if(len !== 0){
-      
-    for(let i= 0; i < len; i++){
-
-        if(drivers[i].length !== 0 ){
-
-            const obj = drivers[i];            
-            driverArray.push(obj)
-            
-        }
-        
-    } 
-    return driverArray;
-} else{
-    
-    return idDriverNull;
-}
-    
-    
-}
 
 const removeDriver = async(req = request, res = response) => {   
            
@@ -177,7 +175,7 @@ module.exports ={
     assigDriver,
     removeDriver,
     assigDriverAutomatic,
-    searchDriver,
-    comprobarNullDriver
+    
+    
 }
 

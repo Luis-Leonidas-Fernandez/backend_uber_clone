@@ -24,7 +24,7 @@ const validarDistanciaEntreCoordendas = (ubicacion) => {
     const distanciaResultado = RADIO_TIERRA_EN_KILOMETROS * c;    
     
     let distanciaUsuario = Math.round(distanciaResultado * 1000);       
-    const distanciaPermitida = 2000;
+    const distanciaPermitida = 5000;
    
     try {
 

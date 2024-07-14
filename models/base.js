@@ -7,14 +7,19 @@ const BaseSchema = Schema({
         required: false
     },    
     
-    ubicacion: {         
+    ubicacion: {        
+        type:{
+            type: String,            
+            enum: ['Point'], 
+            required: true,
+        },                 
         coordinates: {
-            type: String,
-            required: false
-          
-    },    
-        type: ['Point'], 
-          required: false
+            type: [Number],
+            required: true,
+            index: '2dsphere'           
+    },
+         
+        
     },
     
 

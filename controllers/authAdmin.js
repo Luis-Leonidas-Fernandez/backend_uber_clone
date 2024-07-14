@@ -8,9 +8,8 @@ const crearAdmin = async(req, res = response) => {
 
 
     //unica funcion modificada 16/05/2023    
-    const { email, password} = req.body;  
-    
-    console.log('AQUI PASO');
+    const { email, password} = req.body;      
+   
     const existeEmail = await Admin.findOne({ email });
     
     if (existeEmail) {

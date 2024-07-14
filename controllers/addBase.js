@@ -3,6 +3,7 @@ const Zona = require('../models/zona');
 const Driver = require('../models/driver');
 const Admin = require('../models/admin');
 const Base = require('../models/base');
+const baseRepository = require('../respositories/base_repository');
 const ObjectId = require('mongodb').ObjectId;
 
 
@@ -127,20 +128,28 @@ const addBaseAdmin = async(req = request, res = response) => {
       base:      Number(base),
       adminId:   new ObjectId(idAdmin),
       zonaName:  zonaAvailable[0].nombre,            
-      ubicacion: {coordinates: ubicacion }
+      ubicacion: {type: "Point", coordinates: ubicacion }
 
       }      
         
        
       const data = new Base(object);     
-      const result = await data.save(); 
+      const result = await data.save();
+      const idBase = data._id; 
       
-      const registerOk = await Admin.findOneAndUpdate({_id: idAdmin}, {$set: { base: base }}, { new: true });             
+        
+      //agregar Base Id a Admin Collection
+      const registerOk = await Admin.findOneAndUpdate({_id: idAdmin}, {$set: { base: base }}, { new: true });
+      
+      // agregar Base Id a Zona Collection
+      await Zona.findOneAndUpdate({nombre: zona}, {$set: {basesId: new ObjectId(idBase) }}, {new: true});    
+      
+      
       if(!registerOk) {
         return res.status(400).json({ok:false, msg: 'Error al Guardar Numero de Base'});
       }
 
-
+     
       res.status(200).json({ ok: true, result});
 
 
@@ -166,77 +175,9 @@ const getDriversfromBase = async(req = request, res = response) => {
      });
    } 
 
-   const result = await Base.aggregate([
+   return baseRepository.findByIdAndDrivers(adminId, idBase);
 
-    {
-        $match : {$and: [{adminId: adminId}, {base: idBase }] }},        
-    
-    {    
-        $lookup:
-        {
-
-          from: "drivers",
-          localField: "idDriver",//base
-          foreignField: "_id",//drivers          
-          as: "driver",
-          pipeline: [
-            { $project: { _id: 0, password: 0,  __v: 0 , base: 0} }
-        ],
-
-        }
-    },  
-    
    
-     
-    {
-      $group: {
-        
-        base: {$first: "$base"},
-        viajes: {$first: "$viajes"},
-        adminId: {$first: "$adminId"},
-        zonaName: {$first: "$zonaName"},
-        ubicacion: {$first: "$ubicacion"},
-        _id: "$_id",           
-        drivers: {
-
-          $push: "$driver",
-         
-          
-        
-        },
-       
-        
-      }
-    },   
-    {
-      $unwind: "$drivers"
-    },
-    
-    
-    
-   
-]);  
-
-
-const data = Object.assign({}, ...result);
-
-if (data.drivers === null) {  
-  
- 
-
-  return res.status(201).json({
-    ok: false,
-    msg: 'No existen conductores registrados',
-    data: data
-});
-
-} else {
-
- 
-   
-  return res.json({ ok: true, data});
-
-}
         
 }
 

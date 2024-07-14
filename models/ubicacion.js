@@ -20,24 +20,34 @@ const AddressSchema = Schema({
         required: false
     },
 
-    ubicacion: {         
+    ubicacion: { 
+        type:{
+            type: String,            
+            enum: ['Point'], 
+            required: true,
+        },          
         coordinates: {
-            type: String,
-            required: false
-          
-    },    
-        type: ['Point'], 
-          required: false
-    },
+            type: [Number],
+            required: false,
+            index: '2dsphere'          
+    },  
+        
+   },
+
     mensaje: {
+
+        type:{
+            type: String,            
+            enum: ['Point'], 
+            default: 'Point',
+            
+        },  
         coordinates: {
             type: Array,
-            required: false            
-          
+            required: false   
     },    
-        type: ['Point'], 
-          required: false
-    }, 
+       
+   }, 
     
 }, 
 

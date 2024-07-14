@@ -1,9 +1,9 @@
 const axios    = require('axios').default;
 const { getUbicacionesAutomatic }= require('../controllers/authCoordenadas');
-//const Driver = require('../models/driver');
+
 
 const mainAxios = axios.create({
-    baseURL: "https://www.inriservice.com/api/booking",
+    baseURL: "http://localhost:3000/api/booking",
     timeout: 5000
 })
 
@@ -61,9 +61,10 @@ const mainAxios = axios.create({
             for (let i = 0; i < idsOrders.length; i++) {
 
                 const element = idsOrders[i];
-                const miId = element.miId;   
-
-                const rec = await axiosResp(miId);
+                const miId = element.miId;
+                const ubicacion = element.ubicacion.coordinates;   
+                
+                const rec = await axiosResp(miId, ubicacion);
                 req.push(element);               
                                 
             }           
@@ -72,10 +73,13 @@ const mainAxios = axios.create({
         
     };
 
-    const axiosResp = async (miId) => {
-
+    const axiosResp = async (miId, ubicacion) => {
+        
+       
+        
         const id = miId.toString();
-        const result = (await mainAxios.patch(`/${id}`)).data;       
+        const res = await mainAxios.patch(`/${id}`, ubicacion);
+        const result = res.data;
         return result;
     }
 

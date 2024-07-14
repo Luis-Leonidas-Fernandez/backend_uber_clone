@@ -1,5 +1,5 @@
 const { response } = require('express');
-const { validarDistanciaEntreCoordendas} = require('../middlewares/validar-distancia');
+const { buscarZonas} = require('../middlewares/buscar-zona');
 const Address=  require('../models/ubicacion');
 const Usuario = require('../models/usuario');
 const Driver = require('../models/driver');
@@ -8,6 +8,7 @@ const postUbicacion = async(req, res = response) => {
 
    
     const { miId, estado, ubicacion } = req.body;
+   
 
     try {
 
@@ -23,23 +24,25 @@ const postUbicacion = async(req, res = response) => {
         const imput = {
             miId: miId,
             estado: estado,            
-            ubicacion: ubicacion,
+            ubicacion: {type: "Point", coordinates: ubicacion},
             mensaje: {coordinates: [ -58.984374,-27.451225]}
           
             
         }
 
-        const distancia = await validarDistanciaEntreCoordendas(ubicacion);        
+        const zonas = await buscarZonas(ubicacion);
+        const zona = zonas.dist;
 
-        if(distancia === 1){           
+       
+        if(zona <= 2000){           
            
             const address = new Address(imput);         
        
-            const data =await address.save();                    
-                        
+            const data =await address.save();  
             return res.status(200).json({data});
 
         } else{
+            
             const data = {
                 
                 miId: null
