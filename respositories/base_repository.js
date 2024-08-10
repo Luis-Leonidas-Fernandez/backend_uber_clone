@@ -1,11 +1,11 @@
 const Base = require('../models/base');
-const { response } = require('express');
+
 
 class BaseRepository {
 
   
   //Busca una Base y sus conductores
-  async findByIdAndDrivers(adminId, idBase, res = response) {
+  async findByIdAndDrivers(adminId, idBase) {
     
     const result = await Base.aggregate([
 
