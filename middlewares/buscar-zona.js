@@ -1,4 +1,5 @@
 const { redondearNumber } = require('../helpers/redondear');
+const zona_respository = require('../respositories/zona_respository');
 const zonaRepository = require('../respositories/zona_respository');
 
 
@@ -13,38 +14,70 @@ const buscarZonas = async () =>  {
         } else {
             return false;
         }
-        
-        
-        /* // buscar las zonas mas cercanas
-        const zona = await zonaRepository.findZonaCercana(ubicacion);
-        
-        // elije la base mas cercana y redondea la distancia
-        const dist = redondearNumber(zona);
-        
-        
-        const result = {
-            zona,
-            dist: dist
-        }
-        return result; */
-
+               
     
 }
+
+const buscarZonaCercanaPost= async (ubicacion) => {
+
+    // buscar las zonas mas cercanas
+    const zonas = await zonaRepository.findZonaCercana(ubicacion);  
+   
+    const baseId = zonas[0].basesId;   
+
+    if(typeof baseId === "undefined") {
+
+        const distance = 4000;
+        return distance;
+
+    } else {
+
+        // elije la base mas cercana y redondea la distancia
+      const dist = redondearNumber(zonas);
+     
+      return dist;
+
+    }
+
+      
+
+}
+
+
 
 const buscarZonaCercana= async (ubicacion) => {
 
     // buscar las zonas mas cercanas
-    const zona = await zonaRepository.findZonaCercana(ubicacion);
+    const zonas = await zonaRepository.findZonaCercana(ubicacion);
+    
+    
+    const baseId = zonas[0].basesId;
+    
+    if(typeof baseId === "undefined") {
+      
+        const result = {
+            baseId,
+            dist: 4000
+        }
+
         
-    // elije la base mas cercana y redondea la distancia
-    const dist = redondearNumber(zona);
+        return result;
+
+    } else {
+
+      // elije la base mas cercana y redondea la distancia
+      const dist = redondearNumber(zonas);
     
     
-    const result = {
-        zona,
+      const result = {
+        baseId,
         dist: dist
-    }
+      }
     return result;
+
+    }
+     
+    
 
 }
 
@@ -52,6 +85,7 @@ const buscarZonaCercana= async (ubicacion) => {
 
 module.exports = {
     buscarZonas,
-    buscarZonaCercana
+    buscarZonaCercana,
+    buscarZonaCercanaPost
     
 }

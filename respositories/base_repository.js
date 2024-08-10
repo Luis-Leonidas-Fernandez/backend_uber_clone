@@ -1,10 +1,11 @@
 const Base = require('../models/base');
+const { response } = require('express');
 
 class BaseRepository {
 
   
   //Busca una Base y sus conductores
-  async findByIdAndDrivers(adminId, idBase) {
+  async findByIdAndDrivers(adminId, idBase, res = response) {
     
     const result = await Base.aggregate([
 
@@ -51,17 +52,8 @@ class BaseRepository {
     ]);  
         
     const data = Object.assign({}, ...result);    
-    if (data.drivers === null) {      
-         
-      return res.status(201).json({
-        ok: false,
-        msg: 'No existen conductores registrados',
-        data: data
-    });
     
-    } else {
-      return res.json({ ok: true, data});    
-    }
+    return data;
   }
 
  

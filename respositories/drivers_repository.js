@@ -8,9 +8,14 @@ class DriverRepository {
   async findAll(idBase) {
     const id = idBase;   
 
-    const drivers = await Driver.find({ $and: [{ base: id}, {online: true},{order: 'libre'}, {status: 'disponible'}]
-    }).sort({online: 'desc', order: -1, viajes: 1}).limit(20).exec()
+ 
+    /* const document = await Base.findById({_id: id})
+    const drivers  = document.idDriver; */
     
+    const drivers = await Driver.find({ $and: [{ base: id}, {online: true},{order: 'libre'}, {status: 'disponible'}]
+    }).sort({online: 'desc', order: -1, viajes: 1}).limit(20).exec()     
+
+   
     const obj =  await comprobarNullDriver(drivers);       
     
     return obj;   

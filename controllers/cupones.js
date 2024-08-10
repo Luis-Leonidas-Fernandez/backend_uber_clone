@@ -29,7 +29,7 @@ const addPrice = async ( req = request, res = response ) => {
     
      try {       
 
-        const costo = body.venta;
+        const costo = body.venta;        
         
         const  existVaucher = await  comprobarVauchers(idUser);
 

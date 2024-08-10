@@ -57,40 +57,36 @@ const assigDriverAutomatic = async( req = request, res = response ) => {
 
     try {
 
-        ///***PRIMER PARTE BUSCAR ZONA***
-
-        //Validar que la  Zona exista
-
-        const zonaInscripta = await buscarZonas();
-        if(!zonaInscripta) return;
-
-        //Busca Zona mas Cercana - Extrae idBase y Distancia de la base
-
-        const zona = await buscarZonaCercana(ubicacion);      
-
-        const idBase = zona.base[0].basesId;
-        const distancia   = zona.dist;  
-
         
-        if(distancia > 3000) {
+        //Busca Zona mas Cercana - Extrae idBase y Distancia de la base
+         
+        const res = await buscarZonaCercana(ubicacion);       
+      
+        const idBase    = res.baseId;
+        const distancia = res.dist;        
+        
 
+        if(distancia > 3000) {   
+          
           return res.json({
             ok: false,
             driversNotAvailable,
             miId
           })
 
-        };
-        
+        }
+       
+     
         ///*** SEGUNDA PARTE BUSCAR Y ASIGNAR CONDUCTOR***
+       
 
        // Buscar Conductores disponibles de una determinada base       
-       const driverList = await searchDrivers(idBase);      
-              
+       const driverList = await searchDrivers(idBase);     
+            
 
        if(driverList.length > 0){
 
-            //Obteniendo Id de un Conductor
+            //Obteniendo Id de un Conductor           
          
             const idDriver = driverList[0]._id.toString();           
             const id  = miId;

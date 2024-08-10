@@ -78,17 +78,8 @@ server.listen(process.env.PORT, (err) => {
 });
 
 //servicio de despacho de ordenes
-<<<<<<< HEAD
-// *0 
- cron.schedule("*/1 * * * *", async function () {
-=======
 
-<<<<<<< HEAD
- cron.schedule(" */1 * * * *", async function () {
->>>>>>> 9734d31e13bb922cc87c30e383eff11051c39752
-=======
  cron.schedule("*/1 * * * *", async function () {
->>>>>>> 8e814f2041eee51e5dde4e0b571cc698ae3fb8f4
     
     await dispatchDrivers();              
     

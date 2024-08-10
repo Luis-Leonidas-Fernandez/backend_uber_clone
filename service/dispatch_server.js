@@ -1,9 +1,10 @@
 const axios    = require('axios').default;
 const { getUbicacionesAutomatic }= require('../controllers/authCoordenadas');
+const mongoose = require('mongoose');
 
 
 const mainAxios = axios.create({
-    baseURL: "http://localhost:3000/api/booking",
+    baseURL: "https://www.inriservice.com/api/booking",
     timeout: 5000
 })
 
@@ -11,18 +12,23 @@ const mainAxios = axios.create({
     
     const  dispatchDrivers = async () => {     
      
+     const notExistOrder = {msg:  'No existen ordenes para despachar'};  
 
      const id = await getOrders();
-     const notExistOrder = {msg:  'No existen ordenes para despachar'};      
-     const idsOrders = id[0];     
-       
-     if(idsOrders[0].miId !== '1'){               
-        
+     const idsOrders = id[0];
+         
+     const orders = id[0]?.[0] ?? {miId: ""};     
+     const isMongoId = mongoose.isValidObjectId(orders.miId);  
+      
+
+     if(isMongoId) {   
+      
         const requests = await consigDriver(idsOrders);
         
-        return requests;
+        return requests;        
         
-    } else{
+    } else{       
+        
         return notExistOrder;
     }  
      
@@ -61,10 +67,11 @@ const mainAxios = axios.create({
             for (let i = 0; i < idsOrders.length; i++) {
 
                 const element = idsOrders[i];
+
                 const miId = element.miId;
-                const ubicacion = element.ubicacion.coordinates;   
+                const ubicacion = element.ubicacion.coordinates;  
                 
-                const rec = await axiosResp(miId, ubicacion);
+                const rec = await axiosResp(miId, ubicacion);              
                 req.push(element);               
                                 
             }           
@@ -73,13 +80,11 @@ const mainAxios = axios.create({
         
     };
 
-    const axiosResp = async (miId, ubicacion) => {
+    const axiosResp = async (miId, ubicacion) => {   
         
-       
-        
-        const id = miId.toString();
+        const id = miId.toString();      
         const res = await mainAxios.patch(`/${id}`, ubicacion);
-        const result = res.data;
+        const result = res.data;      
         return result;
     }
 

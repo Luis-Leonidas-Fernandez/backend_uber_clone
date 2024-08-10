@@ -1,5 +1,5 @@
 const { response } = require('express');
-const { buscarZonas} = require('../middlewares/buscar-zona');
+const { buscarZonaCercanaPost } = require('../middlewares/buscar-zona');
 const Address=  require('../models/ubicacion');
 const Usuario = require('../models/usuario');
 const Driver = require('../models/driver');
@@ -7,9 +7,8 @@ const Driver = require('../models/driver');
 const postUbicacion = async(req, res = response) => {
 
    
-    const { miId, estado, ubicacion } = req.body;
-   
-
+    const { miId, estado, ubicacion } = req.body;   
+ 
     try {
 
         const usuarioDb    = await Usuario.findOne({miId});
@@ -20,25 +19,40 @@ const postUbicacion = async(req, res = response) => {
                 msg: 'la Ubicacion no puede ser registrada'
             });
         }
+       
 
         const imput = {
             miId: miId,
             estado: estado,            
             ubicacion: {type: "Point", coordinates: ubicacion},
-            mensaje: {coordinates: [ -58.984374,-27.451225]}
+            mensaje:   { type: "Point",coordinates: [  [-58.984374,-27.451225]  ]}
           
             
-        }
-
-        const zonas = await buscarZonas(ubicacion);
-        const zona = zonas.dist;
-
+        }        
+  
+        const dist = await buscarZonaCercanaPost(ubicacion);      
+        
        
-        if(zona <= 2000){           
+        if(dist <= 2000){           
            
             const address = new Address(imput);         
        
-            const data =await address.save();  
+            const result = await address.save();
+            const coords = result.mensaje.coordinates;
+            const points =  coords[coords.length -1];
+            const types = result.mensaje.type;
+
+
+            const data = {
+                id: result._id,
+                miId: result.miId,
+                estado: result.estado,
+                ubicacion: result.ubicacion,
+                mensaje: { type: types, coordinates: points},
+                createdAt: result.createdAt,
+                updatedAt: result.updatedAt
+            }
+            
             return res.status(200).json({data});
 
         } else{

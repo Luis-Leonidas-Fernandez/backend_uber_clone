@@ -175,7 +175,19 @@ const getDriversfromBase = async(req = request, res = response) => {
      });
    } 
 
-   return baseRepository.findByIdAndDrivers(adminId, idBase);
+   const data = await baseRepository.findByIdAndDrivers(adminId, idBase);
+
+   if (data.drivers === null) {   
+       
+    return res.json({
+      ok: false,
+      msg: 'No existen conductores registrados',
+      data: data});
+  
+  } else {
+    
+    return res.json({ok: true, data});    
+  }
 
    
         

@@ -38,9 +38,8 @@ const obtenerViajeDriver = async ( req, res = response ) => {
                    
                 }},                       
            
-    ]);   
-    
-   
+    ]);       
+  
     const orderUser = Object.assign({}, ...address); // data convertida a objeto    
     
 

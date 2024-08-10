@@ -28,6 +28,8 @@ class AddressRepository {
   async delete(id) {
     return Address.findByIdAndDelete(id);
   }
+
+  
 }
 
 module.exports = new AddressRepository();

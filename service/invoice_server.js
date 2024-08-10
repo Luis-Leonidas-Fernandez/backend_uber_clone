@@ -2,13 +2,13 @@ const axios    = require('axios').default;
 
 
 const newInvoiceAxios = axios.create({
-    baseURL: "http://localhost:3000/api/invoice",//cambiar url para produccion y puerto debe ser 5000
+    baseURL: "https://www.inriservice.com/api/invoice",//cambiar url para produccion y puerto debe ser 5000
     timeout: 3000,
     headers: {'Content-Type': 'application/json'}
 }) 
 
 const createInvoicePdfAxios = axios.create({
-    baseURL: "http://localhost:3000/api/invoice",//cambiar url para produccion y puerto debe ser 5000
+    baseURL: "https://www.inriservice.com/api/invoice",//cambiar url para produccion y puerto debe ser 5000
     timeout: 3000,
     headers: {'Content-Type': 'multipart/form-data'}
 }) 

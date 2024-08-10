@@ -1,5 +1,4 @@
 const { io } = require('../index');
-const cron   = require('node-cron');
 const { comprobarJWT } = require('../helpers/jwt');
 const { driverConectado, driverDesconectado } = require('../controllers/socket');
 const { grabarLocation } = require('../controllers/location');
@@ -42,6 +41,7 @@ io.on('connection', (client) => {
 
     client.on('disconnect', () => {       
         driverDesconectado(uid);
+        console.log("driver desconectado");
     });
    
 });

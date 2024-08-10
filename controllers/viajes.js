@@ -35,7 +35,7 @@ const obtenerViajeUsuario = async(req, res= response) => {
                 email: 1,
                 online: 1,
                 estado: 1,
-                mensaje: "$mensaje.coordinates",
+                mensaje: "$mensaje",
                 idDriver: 1,
                 createdAt: 1,
                 updatedAt: 1,
@@ -47,7 +47,8 @@ const obtenerViajeUsuario = async(req, res= response) => {
             }},
                    
        
-]);   
+]);
+
 const resultado = Object.assign({}, ...respuesta);
 const order = Object.keys(respuesta).length; 
 
@@ -55,7 +56,11 @@ const data = order ?? null;
 
 if(order !== 0) {      
                     
-    const ubicacion = resultado.mensaje.pop();
+    const coords = resultado.mensaje.coordinates;
+    const points =  coords[coords.length -1];
+    const types = resultado.mensaje.type;
+    const ubicacion = { type: types, coordinates: points};
+
     
     const address = {
          ok: true,

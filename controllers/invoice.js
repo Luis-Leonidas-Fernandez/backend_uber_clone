@@ -251,8 +251,7 @@ const createInvoice = async (req, res = response) => {
         
 
     } catch (error) {
-
-        console.log("aca error:", error)
+       
         return res.status(500).json({
             ok: false,
             msg: 'Hable con el administrador'

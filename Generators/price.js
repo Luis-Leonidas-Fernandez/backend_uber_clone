@@ -71,9 +71,7 @@ const getPrice = async (res = response) => {
          } 
        
         
-     } catch (error) {
-
-        console.log(`Error: ${error.message}`);
+     } catch (error) {       
         return res.status(500).json({
            ok: false,
            msg: 'Hable con el administrador'

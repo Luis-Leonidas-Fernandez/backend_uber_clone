@@ -14,8 +14,8 @@ class ZonaRepository {
   
   async findZonaCercana(ubicacion) {
 
-    const latUser = ubicacion[0];
-    const longUser  = ubicacion[1];
+    const latUser = ubicacion[1];
+    const longUser  = ubicacion[0];
    
     try {
 
@@ -30,7 +30,7 @@ class ZonaRepository {
           }
         }
       ])          
-         
+       
       return zona;
         
     } catch (error) {
