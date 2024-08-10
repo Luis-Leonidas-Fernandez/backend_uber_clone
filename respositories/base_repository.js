@@ -1,6 +1,5 @@
 const Base = require('../models/base');
 
-
 class BaseRepository {
 
   
@@ -58,5 +57,4 @@ class BaseRepository {
 
  
 }
-
 module.exports = new BaseRepository();
