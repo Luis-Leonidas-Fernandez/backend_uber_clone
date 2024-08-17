@@ -53,8 +53,14 @@ class BaseRepository {
     const data = Object.assign({}, ...result);    
     
     return data;
-  }
+  } 
+  
+  
+
+}
 
  
-}
+
+
+
 module.exports = new BaseRepository();

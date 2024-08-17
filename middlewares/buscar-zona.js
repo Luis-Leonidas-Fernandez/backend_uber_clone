@@ -1,5 +1,4 @@
 const { redondearNumber } = require('../helpers/redondear');
-const zona_respository = require('../respositories/zona_respository');
 const zonaRepository = require('../respositories/zona_respository');
 
 
@@ -21,16 +20,15 @@ const buscarZonas = async () =>  {
 const buscarZonaCercanaPost= async (ubicacion) => {
 
     // buscar las zonas mas cercanas
-    const zonas = await zonaRepository.findZonaCercana(ubicacion);  
+    const zonas = await zonaRepository.findZonaCercana(ubicacion);     
    
-    const baseId = zonas[0].basesId;   
 
-    if(typeof baseId === "undefined") {
+    if( !zonas || zonas.length === 0) {
 
         const distance = 4000;
         return distance;
 
-    } else {
+    } else {        
 
         // elije la base mas cercana y redondea la distancia
       const dist = redondearNumber(zonas);
@@ -48,15 +46,12 @@ const buscarZonaCercanaPost= async (ubicacion) => {
 const buscarZonaCercana= async (ubicacion) => {
 
     // buscar las zonas mas cercanas
-    const zonas = await zonaRepository.findZonaCercana(ubicacion);
+    const zonas = await zonaRepository.findZonaCercana(ubicacion);    
     
-    
-    const baseId = zonas[0].basesId;
-    
-    if(typeof baseId === "undefined") {
+    if(zonas === null || zonas.length === 0 || zonas === undefined) {
       
         const result = {
-            baseId,
+            basesId: null,
             dist: 4000
         }
 
@@ -64,15 +59,19 @@ const buscarZonaCercana= async (ubicacion) => {
         return result;
 
     } else {
+       
+      
 
       // elije la base mas cercana y redondea la distancia
       const dist = redondearNumber(zonas);
+      const basesIds = zonas[0].bases._id;
     
     
       const result = {
-        baseId,
+        basesIds,
         dist: dist
       }
+    
     return result;
 
     }

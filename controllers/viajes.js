@@ -10,7 +10,8 @@ const obtenerViajeUsuario = async(req, res= response) => {
     const respuesta = await Address.aggregate([
 
         {
-            $match : {$and: [{miId: new ObjectId(_id)}, {estado: false}] }},
+            $match : {$and: [{miId: new ObjectId(_id)}, {estado: false}] }
+        },
         
         {
             $lookup:
@@ -21,10 +22,13 @@ const obtenerViajeUsuario = async(req, res= response) => {
                 as: "driver"
             }
         },
-         {
+
+        {
             $replaceRoot: {newRoot: {$mergeObjects: [{$arrayElemAt: ['$driver', 0]}, "$$ROOT"]}}
         },       
-          {$project: { 
+        
+        {
+            $project: { 
                 _id: 1,
                 nombre: 1,
                 apellido: 1,
@@ -39,12 +43,9 @@ const obtenerViajeUsuario = async(req, res= response) => {
                 idDriver: 1,
                 createdAt: 1,
                 updatedAt: 1,
-               
-                                    
-                
-                
 
-            }},
+            }
+        },
                    
        
 ]);

@@ -7,6 +7,7 @@ const driverConectado = async(uid = '') => {
     const driver = await Driver.findById(uid);
     driver.online = true;    
     driver.status = 'disponible';
+    driver.order = 'libre';
     await driver.save();
     return driver;
 }

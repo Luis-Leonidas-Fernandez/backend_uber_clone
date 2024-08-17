@@ -20,7 +20,8 @@ class ZonaRepository {
     try {
 
       const zona = await Zona.aggregate([
-      {
+      
+        {
         $geoNear: {
           near: { type: "Point", coordinates: [ longUser, latUser] },
             distanceField: "dist.calculated",
@@ -28,9 +29,35 @@ class ZonaRepository {
             includeLocs: "dist.location",
             spherical: true
           }
-        }
+        },
+        {
+          $lookup:
+          {
+              from: "bases",
+              localField: "basesId",//zona
+              foreignField: "_id",//bases
+              as: "bases",
+              pipeline: [                  
+                  {
+                   $sort: {viajes: 1}
+                  },
+                  { $project: { _id: 1, viajes: 1, base: 1, zonaName: 1} } //filtra el lookup
+              ],
+          }
+      },
+      { $project: { _id: 1, dist: 1, viajes: 1, bases: 1} },
+      {
+        $unwind: "$bases"
+      },
+       {
+        $unwind: "$bases"
+      },  
+      
+          
+        
       ])          
-       
+      
+      
       return zona;
         
     } catch (error) {

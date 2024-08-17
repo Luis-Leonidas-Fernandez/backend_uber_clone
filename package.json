@@ -1,6 +1,6 @@
 {
-    "name": "01-band_names_server",
-    "version": "1.0.0",
+    "name": "backend_uber_clone",
+    "version": "2.0.0",
     "description": "",
     "main": "index.js",
     "scripts": {

@@ -4,7 +4,7 @@ const mongoose = require('mongoose');
 
 
 const mainAxios = axios.create({
-    baseURL: "https://www.inriservice.com/api/booking",
+    baseURL: "http://localhost:3000/api/booking",//"https://www.inriservice.com/api/booking"
     timeout: 5000
 })
 

@@ -23,8 +23,7 @@ const ZonaSchema = Schema({
         },             
         coordinates: {
             type: String,
-            required: false,
-            index: '2dsphere'            
+            required: false,                    
     },    
         
     },
@@ -43,5 +42,5 @@ ZonaSchema.method('toJSON', function() {
 
 
 
-module.exports = model('Zona',
+module.exports = model('Zonas',
     ZonaSchema);

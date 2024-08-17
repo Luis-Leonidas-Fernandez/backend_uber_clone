@@ -1,9 +1,11 @@
 const { response } = require('express');
 const Address      = require('../models/ubicacion');
 const Driver       = require('../models/driver');
-const { buscarZonas, buscarZonaCercana } = require('../middlewares/buscar-zona');
-const { searchDrivers, updateStatusDriverAsing  } = require('../middlewares/drivers-to-base');
+const { buscarZonaCercana } = require('../middlewares/buscar-zona');
+const { updateStatusDriverAsing  } = require('../middlewares/drivers-to-base');
 const { addDriverToAddress, } = require('../middlewares/address');
+const {findBasesByIdsAndDrivers} = require('../middlewares/buscar-base');
+
 
 const assigDriver = async(req = request, res = response) => {          
    
@@ -58,15 +60,15 @@ const assigDriverAutomatic = async( req = request, res = response ) => {
     try {
 
         
-        //Busca Zona mas Cercana - Extrae idBase y Distancia de la base
+        //Busca Zona mas Cercana - Extrae idBase y Distancia de las bases
          
-        const res = await buscarZonaCercana(ubicacion);       
-      
-        const idBase    = res.baseId;
-        const distancia = res.dist;        
+        const zona = await buscarZonaCercana(ubicacion);       
+        
+        const idBase    = zona.basesIds;
+        const distancia = zona.dist;        
         
 
-        if(distancia > 3000) {   
+         if(distancia > 3000) {   
           
           return res.json({
             ok: false,
@@ -75,52 +77,50 @@ const assigDriverAutomatic = async( req = request, res = response ) => {
           })
 
         }
-       
-     
-        ///*** SEGUNDA PARTE BUSCAR Y ASIGNAR CONDUCTOR***
-       
+        
+        // **** BUSCA TODAS LAS BASES DE UNA DETERMINADA ZONA MAS SUS CONDUCTORES *****
+        const driverList = await findBasesByIdsAndDrivers(idBase);        
+      
+        //*** SEGUNDA PARTE ASIGNAR CONDUCTOR***              
 
-       // Buscar Conductores disponibles de una determinada base       
-       const driverList = await searchDrivers(idBase);     
-            
-
-       if(driverList.length > 0){
+        if( driverList.length !== 0 ){
 
             //Obteniendo Id de un Conductor           
          
-            const idDriver = driverList[0]._id.toString();           
+            const idDriver = driverList[0].drivers._id.toString();           
             const id  = miId;
-                                 
+                               
             // Agregando Un Conductor a una address
-
-            const userAddress = await addDriverToAddress(id,idDriver);
+       
+            const userAddress = await addDriverToAddress(id, idDriver);           
             
+            // no existe conductor para asignar
             if(userAddress.length == 0) {
-               
-              return res.json({
+            
+            return res.json({
                 ok: false,
                 driversNotAvailable,
                 miId
              });  
-            }
-                
+            } 
+
             // Actualizando el Modelo DRIVER en su campo Status: NO DISPONIBLES
 
             await updateStatusDriverAsing(idDriver, noDisponible);
-                
-         
-             const data = {
+              
+            const data = {
                 userAddress                
-             }  
+            }  
 
             return res.json({ok: true , data});
             
         } else {
 
             return res.json({ ok: false, driversNotAvailable, miId});
-        }
+        } 
+                          
         
-    }catch (error) {
+    } catch (error) {
            
         res.status(500).json({
             ok: false,
